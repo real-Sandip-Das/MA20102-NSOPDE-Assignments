@@ -1,10 +1,10 @@
 import numpy as np
 from Taylor_series_methods import taylor_series_method
 
-def P_Adams_Bashforth4_C_Adams_Moulton4(y_derivatives, a: np.float32, b: np.float32, y_0: np.float32, N: np.uint32, decimals: int = 5):
+def P_Adams_Bashforth4_C_Adams_Moulton4(y_derivatives, a: np.float32, b: np.float32, y_0: np.float32, N: np.uint32, decimals: int = 5, starting_method = taylor_series_method):
     if N < 4: raise ValueError("N must be >= 4")
     h = (b - a)/N
-    _, y_first4 = taylor_series_method(y_derivatives, a, a + 3*h, y_0, 3, decimals)
+    if starting_method == taylor_series_method: _, y_first4 = taylor_series_method(y_derivatives, a, a + 3*h, y_0, 3, decimals)
     x_n = np.array([a + n*h for n in range(N+1)], dtype=np.float32)
     y_n = np.zeros((N+1,), dtype=np.float32)
     y_n[0 : 4] = y_first4
@@ -22,10 +22,10 @@ def P_Adams_Bashforth4_C_Adams_Moulton4(y_derivatives, a: np.float32, b: np.floa
     
     return x_n, y_n
 
-def P_Milne4_C_Milne_Simpson4(y_derivatives, a: np.float32, b: np.float32, y_0: np.float32, N: np.uint32, decimals: int = 5):
+def P_Milne4_C_Milne_Simpson4(y_derivatives, a: np.float32, b: np.float32, y_0: np.float32, N: np.uint32, decimals: int = 5, starting_method = taylor_series_method):
     if N < 4: raise ValueError("N must be >= 4")
     h = (b - a)/N
-    _, y_first4 = taylor_series_method(y_derivatives, a, a + 3*h, y_0, 3, decimals)
+    if starting_method == taylor_series_method: _, y_first4 = taylor_series_method(y_derivatives, a, a + 3*h, y_0, 3, decimals)
     x_n = np.array([a + n*h for n in range(N+1)], dtype=np.float32)
     y_n = np.zeros((N+1,), dtype=np.float32)
     y_n[0 : 4] = y_first4
