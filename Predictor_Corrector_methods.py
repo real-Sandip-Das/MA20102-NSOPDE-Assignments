@@ -18,7 +18,13 @@ def P_Adams_Bashforth4_C_Adams_Moulton4(y_derivatives, a: np.float32, b: np.floa
         y_p = y_n[n] + h*(55*f_n - 59*f_n_1 + 37*f_n_2 - 9*f_n_3)/24
         y_p = np.round(y_p, decimals)
         y_c = y_n[n] + h*(9*f(x_n[n+1], y_p) + 19*f_n - 5*f_n_1 + 5*f_n_2)/24
-        y_n[n+1] = np.round(y_c, decimals)
+        while True:
+            y_c = np.round(y_c, decimals)
+            y_c_new = y_n[n] + h*(9*f(x_n[n+1], y_c) + 19*f_n - 5*f_n_1 + 5*f_n_2)/24
+            y_c_new = np.round(y_c_new, decimals)
+            if y_c_new == y_c: break
+            y_c = y_c_new
+        y_n[n+1] = y_c
     
     return x_n, y_n
 
@@ -38,6 +44,12 @@ def P_Milne4_C_Milne_Simpson4(y_derivatives, a: np.float32, b: np.float32, y_0: 
         y_p = y_n[n-3] + 4*h*(2*f_n - f_n_1 + 2*f_n_2)/3
         y_p = np.round(y_p, decimals)
         y_c = y_n[n-1] + h*(2*f(x_n[n+1], y_p) + 4*f_n + f_n_1)/3
-        y_n[n+1] = np.round(y_c, decimals)
+        while True:
+            y_c = np.round(y_c, decimals)
+            y_c_new = y_n[n-1] + h*(2*f(x_n[n+1], y_c) + 4*f_n + f_n_1)/3
+            y_c_new = np.round(y_c_new, decimals)
+            if y_c_new == y_c: break
+            y_c = y_c_new
+        y_n[n+1] = y_c
     
     return x_n, y_n
