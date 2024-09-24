@@ -19,12 +19,10 @@ def P_Adams_Bashforth4_C_Adams_Moulton4(y_derivatives, a: np.float32, b: np.floa
         y_p = np.round(y_p, decimals)
         y_c = y_n[n] + h*(9*f(x_n[n+1], y_p) + 19*f_n - 5*f_n_1 + 5*f_n_2)/24
         while True:
-            y_c = np.round(y_c, decimals)
             y_c_new = y_n[n] + h*(9*f(x_n[n+1], y_c) + 19*f_n - 5*f_n_1 + 5*f_n_2)/24
-            y_c_new = np.round(y_c_new, decimals)
-            if y_c_new == y_c: break
+            if np.round(y_c_new, decimals) == np.round(y_c, decimals): break
             y_c = y_c_new
-        y_n[n+1] = y_c
+        y_n[n+1] = np.round(y_c, decimals)
     
     return x_n, y_n
 
